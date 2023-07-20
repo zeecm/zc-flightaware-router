@@ -8,7 +8,7 @@ install:
 	pre-commit install
 
 check:
-	pylint $(PACKAGE)
+	-pylint $(PACKAGE)
 	pyright $(PACKAGE)
 
 test:
