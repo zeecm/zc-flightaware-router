@@ -12,6 +12,7 @@ setup(
         "python-dotenv",
         "requests",
         "pyside6",
+        "loguru",
     ],
     extras_require={
         "dev": [
