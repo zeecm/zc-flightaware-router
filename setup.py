@@ -9,6 +9,8 @@ setup(
     install_requires=[
         "pandas",
         "numpy",
+        "python-dotenv",
+        "requests",
     ],
     extras_require={
         "dev": [
