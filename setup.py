@@ -11,6 +11,7 @@ setup(
         "numpy",
         "python-dotenv",
         "requests",
+        "pyside6",
     ],
     extras_require={
         "dev": [
