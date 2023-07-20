@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
 import requests
@@ -24,7 +24,10 @@ class FlightAwareAPI:
         self._request_header = {"x-apikey": api_key}
 
     def _make_api_call(
-        self, api_endpoint: str, params: Dict[str, str | int] = None, timeout: int = 5
+        self,
+        api_endpoint: str,
+        params: Optional[Dict[str, str | int]] = None,
+        timeout: int = 5,
     ) -> Response:
         params = params or {}
         response = requests.get(
