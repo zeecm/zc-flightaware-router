@@ -3,9 +3,9 @@ import os
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
-from loguru import logger
 import requests
 from dotenv import load_dotenv
+from loguru import logger
 from requests import Response
 
 load_dotenv()
@@ -58,16 +58,14 @@ class FlightAwareAPI:
             final_airport_info = [full_airport_info]
 
         return pd.DataFrame(final_airport_info)
-    
-    def _process_airport_info(self, airport_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+    def _process_airport_info(
+        self, airport_info: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         best_match_info = {
-            key: value
-            for key, value in airport_info.items()
-            if key != "alternatives"
+            key: value for key, value in airport_info.items() if key != "alternatives"
         }
-        alternative_airport_info: List[Dict[str, Any]] = airport_info[
-            "alternatives"
-        ]
+        alternative_airport_info: List[Dict[str, Any]] = airport_info["alternatives"]
         return [best_match_info] + alternative_airport_info
 
     def get_route_info(
