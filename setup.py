@@ -27,6 +27,7 @@ setup(
             "pre-commit",
             "pyright",
             "pylint",
+            "pyinstaller",
         ]
     },
 )
