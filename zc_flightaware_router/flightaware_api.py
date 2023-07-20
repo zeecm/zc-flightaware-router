@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Literal, Optional
 import pandas as pd
 import requests
 from dotenv import load_dotenv
+from loguru import logger
 from requests import Response
 
 load_dotenv()
@@ -37,7 +38,8 @@ class FlightAwareAPI:
             timeout=timeout,
         )
         if response.status_code != 200:
-            raise ConnectionError("request failed")
+            error = response.text
+            logger.warning(f"Did not manage to make a successful connection: {error}")
         return response
 
     def get_airport_information(self, airport_id: str) -> pd.DataFrame:
@@ -50,16 +52,21 @@ class FlightAwareAPI:
         response = self._make_api_call(airport_info_endpoint)
 
         full_airport_info: Dict[str, Any] = json.loads(response.text)
-        best_match_info = {
-            key: value
-            for key, value in full_airport_info.items()
-            if key != "alternatives"
-        }
-        alternative_airport_info: List[Dict[str, Any]] = full_airport_info[
-            "alternatives"
-        ]
+        try:
+            final_airport_info = self._process_airport_info(full_airport_info)
+        except KeyError:
+            final_airport_info = [full_airport_info]
 
-        return pd.DataFrame(([best_match_info] + alternative_airport_info))
+        return pd.DataFrame(final_airport_info)
+
+    def _process_airport_info(
+        self, airport_info: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
+        best_match_info = {
+            key: value for key, value in airport_info.items() if key != "alternatives"
+        }
+        alternative_airport_info: List[Dict[str, Any]] = airport_info["alternatives"]
+        return [best_match_info] + alternative_airport_info
 
     def get_route_info(
         self,
@@ -87,18 +94,21 @@ class FlightAwareAPI:
         return self._process_route_info(route_info_df)
 
     def _process_route_info(self, route_info: pd.DataFrame) -> pd.DataFrame:
-        route_info["aircraft_types"] = route_info["aircraft_types"].apply(
-            lambda aircrafts: ", ".join(set(aircrafts))
-        )
-        route_info["filed_altitude_max"] = "FL" + route_info[
-            "filed_altitude_max"
-        ].astype(str)
-        route_info["filed_altitude_min"] = "FL" + route_info[
-            "filed_altitude_min"
-        ].astype(str)
-        route_info["last_departure_time"] = pd.to_datetime(
-            route_info["last_departure_time"]
-        ).dt.strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            route_info["aircraft_types"] = route_info["aircraft_types"].apply(
+                lambda aircrafts: ", ".join(set(aircrafts))
+            )
+            route_info["filed_altitude_max"] = "FL" + route_info[
+                "filed_altitude_max"
+            ].astype(str)
+            route_info["filed_altitude_min"] = "FL" + route_info[
+                "filed_altitude_min"
+            ].astype(str)
+            route_info["last_departure_time"] = pd.to_datetime(
+                route_info["last_departure_time"]
+            ).dt.strftime("%Y-%m-%d %H:%M:%S")
+        except KeyError:
+            route_info = pd.DataFrame({"error": "invalid or missing data"}, index=[0])
         return route_info
 
 

@@ -12,6 +12,7 @@ setup(
         "python-dotenv",
         "requests",
         "pyside6",
+        "loguru",
     ],
     extras_require={
         "dev": [
@@ -26,6 +27,7 @@ setup(
             "pre-commit",
             "pyright",
             "pylint",
+            "pyinstaller",
         ]
     },
 )
