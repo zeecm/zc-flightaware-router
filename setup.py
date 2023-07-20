@@ -21,6 +21,8 @@ setup(
             "radon",
             "codespell",
             "pre-commit",
+            "pyright",
+            "pylint",
         ]
     },
 )
