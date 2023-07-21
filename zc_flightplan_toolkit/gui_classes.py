@@ -1,5 +1,13 @@
+from typing import Optional
+
 import pandas as pd
-from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from loguru import logger
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, QSettings, Qt
+from PySide6.QtWidgets import QDialog, QWidget
+
+from zc_flightplan_toolkit.qdesigner_generated_ui.generated_settings import (
+    Ui_preferences_dialog,
+)
 
 
 class PandasModel(QAbstractTableModel):
@@ -51,3 +59,39 @@ class PandasModel(QAbstractTableModel):
                 return None
 
         return None
+
+
+class PreferencesDialog(QDialog):
+    def __init__(self, parent: Optional[QWidget] = None, default_api_key: str = ""):
+        super().__init__(parent)
+        self.ui = Ui_preferences_dialog()
+        self.ui.setupUi(self)
+        self.ui.aero_api_key_lineedit.setText(default_api_key)
+
+        self.aero_api_key = default_api_key
+
+    def exec(self) -> bool:
+        if super().exec():
+            self.aero_api_key = self.ui.aero_api_key_lineedit.text()
+            return True
+        return False
+
+
+class ToolkitPreferences:
+    def __init__(self):
+        self.setting_handler = QSettings("ZhaoCong", "FlightPlanner")
+
+    def get_setting(self, setting: str, default_setting: str = "") -> str:
+        try:
+            return str(self.setting_handler.value(setting, default_setting))
+        except EOFError:
+            return ""
+
+    def set_setting(self, setting: str, value: str) -> bool:
+        value_changed = self._value_changed(setting, value)
+        self.setting_handler.setValue(setting, value)
+        return value_changed
+
+    def _value_changed(self, setting: str, new_value: str) -> bool:
+        old_value = self.get_setting(setting)
+        return old_value != new_value

@@ -74,7 +74,23 @@
            </layout>
           </item>
           <item>
-           <widget class="QTableView" name="route_info_table"/>
+           <widget class="QTableView" name="route_info_table">
+            <property name="contextMenuPolicy">
+             <enum>Qt::ActionsContextMenu</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustIgnored</enum>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -124,7 +140,20 @@
            </layout>
           </item>
           <item>
-           <widget class="QTableView" name="airport_info_table"/>
+           <widget class="QTableView" name="airport_info_table">
+            <property name="contextMenuPolicy">
+             <enum>Qt::ActionsContextMenu</enum>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="label">
@@ -156,57 +185,35 @@
              <attribute name="title">
               <string>North Atlantic Tracks</string>
              </attribute>
-             <widget class="QPushButton" name="get_north_atlantic_tracks_button">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>191</width>
-                <height>24</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Fetch North Atlantic Tracks Data</string>
-              </property>
-             </widget>
-             <widget class="QTextBrowser" name="north_atlantic_text_display">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>40</y>
-                <width>511</width>
-                <height>741</height>
-               </rect>
-              </property>
-             </widget>
+             <layout class="QGridLayout" name="gridLayout_6">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="get_north_atlantic_tracks_button">
+                <property name="text">
+                 <string>Fetch North Atlantic Tracks Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QTextBrowser" name="north_atlantic_text_display"/>
+              </item>
+             </layout>
             </widget>
             <widget class="QWidget" name="pacific_tracks_tab">
              <attribute name="title">
               <string>Pacific Tracks</string>
              </attribute>
-             <widget class="QPushButton" name="get_pacific_tracks_button">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>191</width>
-                <height>24</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Fetch Pacific Tracks Data</string>
-              </property>
-             </widget>
-             <widget class="QTextBrowser" name="pacific_tracks_display">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>40</y>
-                <width>931</width>
-                <height>741</height>
-               </rect>
-              </property>
-             </widget>
+             <layout class="QGridLayout" name="gridLayout_7">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="get_pacific_tracks_button">
+                <property name="text">
+                 <string>Fetch Pacific Tracks Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QTextBrowser" name="pacific_tracks_display"/>
+              </item>
+             </layout>
             </widget>
            </widget>
           </item>
@@ -231,12 +238,12 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionPreferences"/>
+    <addaction name="toolbar_preferences_button"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionPreferences">
+  <action name="toolbar_preferences_button">
    <property name="text">
     <string>Preferences</string>
    </property>

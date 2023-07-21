@@ -1,13 +1,17 @@
 import os
 from enum import Enum
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 FLIGHTAWARE_API_ENV = os.environ.get("FLIGHTAWARE_API_ENV", "aeroapi")
 
 FLIGHTAWARE_API_URL = f"https://{FLIGHTAWARE_API_ENV}.flightaware.com/aeroapi"
 
-AEROAPI_KEY = os.environ.get("AEROAPI_KEY", "LZ2dw1SZrAA9eGjsU8sv2PdrmMBedOp3")
-
 DATIS_ENDPOINT = "http://datis.clowd.io/api/"
+
+AERO_API_KEY = os.environ.get("AERO_API_KEY", "")
 
 
 class FlightAwareAirportColumns(Enum):
@@ -31,3 +35,7 @@ class DATISInfo(Enum):
     TYPE = "type"
     CODE = "code"
     ATIS = "datis"
+
+
+class Preferences(Enum):
+    AERO_API_KEY = "aero_api_key"

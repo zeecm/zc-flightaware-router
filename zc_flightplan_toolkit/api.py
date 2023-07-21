@@ -5,19 +5,16 @@ from typing import Any, Dict, List, Literal, Optional, Protocol
 
 import pandas as pd
 import requests
-from dotenv import load_dotenv
 from loguru import logger
 from requests import Response
 
 from zc_flightplan_toolkit.constants import (
-    AEROAPI_KEY,
+    AERO_API_KEY,
     DATIS_ENDPOINT,
     FLIGHTAWARE_API_URL,
     DATISInfo,
     FlightAwareAirportColumns,
 )
-
-load_dotenv()
 
 
 class DATISAPI(Protocol):
@@ -71,6 +68,10 @@ class FlightInfoAPI(Protocol):
     def get_datis(self) -> str:
         ...
 
+    @classmethod
+    def reinitialize(cls, **kwargs) -> FlightInfoAPI:
+        ...
+
 
 class FlightAwareAPI:
     """Class to interface with Flight Aware's API to retrieve information
@@ -80,11 +81,15 @@ class FlightAwareAPI:
     def __init__(
         self,
         api_url: str = FLIGHTAWARE_API_URL,
-        api_key: str = AEROAPI_KEY,
+        api_key: str = "",
         datis_api: DATISAPI = ClowdIoDATISAPI(),
     ):
         self._api_url = api_url
         self._datis_api = datis_api
+
+        if not api_key:
+            api_key = AERO_API_KEY
+
         self._request_header = {"x-apikey": api_key}
 
         self.airport_info: Optional[pd.DataFrame] = None
@@ -192,3 +197,16 @@ class FlightAwareAPI:
         except KeyError:
             route_info = pd.DataFrame({"error": "invalid or missing data"}, index=[0])
         return route_info
+
+    @classmethod
+    def reinitialize(
+        cls,
+        api_url: str = FLIGHTAWARE_API_URL,
+        api_key: str = "",
+        datis_api: DATISAPI = ClowdIoDATISAPI(),
+        **kwargs,
+    ) -> FlightInfoAPI:
+        logger.info(
+            f"api reinitialized with api_url: {api_url}, api_key: {api_key}, datis_api: {datis_api}"
+        )
+        return cls(api_url, api_key, datis_api)

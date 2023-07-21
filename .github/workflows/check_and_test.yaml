@@ -17,4 +17,6 @@ jobs:
     - name: Run Linting and Type Checking
       run: make check
     - name: Run Unit Tests
+      env:
+        AERO_API_KEY: ${{ secrets.AERO_API_KEY }}
       run: make test

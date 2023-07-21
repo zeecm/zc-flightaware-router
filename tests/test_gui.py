@@ -9,7 +9,7 @@ from PySide6.QtCore import Qt
 from pytest_mock import MockerFixture
 from pytestqt.qtbot import QtBot  # type: ignore
 
-from zc_flightplan_toolkit.gui_window import FlightAwareRouter
+from zc_flightplan_toolkit.gui_window import FlightPlanToolkit
 
 
 @pytest.mark.parametrize(
@@ -25,7 +25,7 @@ def test_get_airport_button(qtbot: QtBot, mocker: MockerFixture, airport_id: str
         "zc_flightplan_toolkit.gui_window.FlightAwareAPI.get_airport_information"
     )
 
-    toolkit = FlightAwareRouter()
+    toolkit = FlightPlanToolkit()
     toolkit.show()
     qtbot.addWidget(toolkit)
 
@@ -50,7 +50,7 @@ def test_get_route_button(
         "zc_flightplan_toolkit.gui_window.FlightAwareAPI.get_route_info"
     )
 
-    toolkit = FlightAwareRouter()
+    toolkit = FlightPlanToolkit()
     toolkit.show()
     qtbot.addWidget(toolkit)
 
@@ -67,7 +67,7 @@ def test_get_north_atlantic_tracks_button(qtbot: QtBot, mocker: MockerFixture):
         return_value="mock_tracks",
     )
 
-    toolkit = FlightAwareRouter()
+    toolkit = FlightPlanToolkit()
     toolkit.show()
     qtbot.addWidget(toolkit)
 
@@ -84,10 +84,28 @@ def test_get_pacific_tracks_button(qtbot: QtBot, mocker: MockerFixture):
         return_value="mock_tracks",
     )
 
-    toolkit = FlightAwareRouter()
+    toolkit = FlightPlanToolkit()
     toolkit.show()
     qtbot.addWidget(toolkit)
 
     qtbot.mouseClick(toolkit.ui.get_pacific_tracks_button, Qt.MouseButton.LeftButton)
 
     assert toolkit.ui.pacific_tracks_display.toPlainText() == "mock_tracks"
+
+
+def test_settings_dialog_opens(qtbot: QtBot, mocker: MockerFixture):
+    dialog_mock = mocker.patch("zc_flightplan_toolkit.gui_window.PreferencesDialog")
+
+    preferences_mock = mocker.patch(
+        "zc_flightplan_toolkit.gui_window.ToolkitPreferences"
+    )
+    preferences_mock.get_setting.return_value = ""
+    preferences_mock.set_setting.return_value = False
+
+    toolkit = FlightPlanToolkit()
+    toolkit.show()
+    qtbot.addWidget(toolkit)
+
+    toolkit.ui.toolbar_preferences_button.trigger()
+
+    dialog_mock.assert_called_once()

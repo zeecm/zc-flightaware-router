@@ -1,20 +1,34 @@
+from typing import Optional
+
 from loguru import logger
 from PySide6.QtWidgets import QMainWindow
 
 from zc_flightplan_toolkit.api import FlightAwareAPI, FlightInfoAPI
-from zc_flightplan_toolkit.gui_classes import PandasModel
-from zc_flightplan_toolkit.mainwindow import Ui_mainWindow
+from zc_flightplan_toolkit.constants import Preferences
+from zc_flightplan_toolkit.gui_classes import (
+    PandasModel,
+    PreferencesDialog,
+    ToolkitPreferences,
+)
+from zc_flightplan_toolkit.qdesigner_generated_ui.generated_mainwindow import (
+    Ui_mainWindow,
+)
 from zc_flightplan_toolkit.tracks import get_north_atlantic_tracks, get_pacific_tracks
 
 
-class FlightAwareRouter(QMainWindow):
-    def __init__(self, api: FlightInfoAPI = FlightAwareAPI()):
+class FlightPlanToolkit(QMainWindow):
+    def __init__(self, api: Optional[FlightInfoAPI] = None):
         super().__init__()
+        self._api: FlightInfoAPI
+
         self.ui = Ui_mainWindow()
         self.ui.setupUi(self)
-        self._api = api
+        self.preferences = ToolkitPreferences()
+
+        self._initialize_api(api)
 
         self._setup_buttons()
+        self._setup_toolbar()
 
     def _setup_buttons(self) -> None:
         self.ui.get_airport_info_button.clicked.connect(
@@ -27,6 +41,13 @@ class FlightAwareRouter(QMainWindow):
         self.ui.get_pacific_tracks_button.clicked.connect(
             self._get_pacific_tracks_button_clicked
         )
+
+    def _initialize_api(self, api: Optional[FlightInfoAPI] = None) -> None:
+        aero_api_key = self.preferences.get_setting(Preferences.AERO_API_KEY.value)
+        self._api = api or FlightAwareAPI(api_key=aero_api_key)
+
+    def _setup_toolbar(self) -> None:
+        self.ui.toolbar_preferences_button.triggered.connect(self._open_settings_dialog)
 
     def _get_and_display_airport_info(self) -> None:
         airport_id = self.ui.airport_id_lineedit.text()
@@ -62,3 +83,11 @@ class FlightAwareRouter(QMainWindow):
     def _get_pacific_tracks_button_clicked(self) -> None:
         tracks_data = get_pacific_tracks()
         self.ui.pacific_tracks_display.setHtml(tracks_data)
+
+    def _open_settings_dialog(self):
+        api_key = self.preferences.get_setting(Preferences.AERO_API_KEY.value)
+        dialog = PreferencesDialog(default_api_key=api_key)
+        if _ := dialog.exec():
+            api_key = dialog.aero_api_key
+        if _ := self.preferences.set_setting(Preferences.AERO_API_KEY.value, api_key):
+            self._api.reinitialize(api_key=api_key)
