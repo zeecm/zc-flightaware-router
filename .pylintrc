@@ -1,2 +1,2 @@
 [pylint]
-ignore = mainwindow.py
+ignore = qdesigner_generated_ui

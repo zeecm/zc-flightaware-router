@@ -13,6 +13,7 @@ setup(
         "requests",
         "pyside6",
         "loguru",
+        "frozendict",
     ],
     extras_require={
         "dev": [

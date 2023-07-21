@@ -106,8 +106,8 @@ class FlightAwareAPI:
         params = params or {}
 
         if cache:
-            params = frozendict(params)
-            return self._cached_api_call(api_endpoint, params, timeout)
+            frozen_params = frozendict(params)
+            return self._cached_api_call(api_endpoint, frozen_params, timeout)
 
         logger.info(f"making 1 api call to {self._api_url}")
         response = requests.get(
@@ -125,11 +125,11 @@ class FlightAwareAPI:
     def _cached_api_call(
         self,
         api_endpoint: str,
-        params: Optional[frozendict[str, str | int]] = None,
+        frozen_params: Optional[frozendict[str, str | int]] = None,
         timeout: int = 5,
     ) -> Response:
-        params = params or frozendict()
-        params = dict(params)
+        frozen_params = frozen_params or frozendict()
+        params = dict(frozen_params)
         return self._make_api_call(api_endpoint, params, timeout, cache=False)
 
     def get_airport_information(self, airport_id: str) -> pd.DataFrame:
