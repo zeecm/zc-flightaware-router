@@ -40,7 +40,7 @@ def test_get_route_info(flightaware_api: FlightInfoAPI):
         ("KMIA"),
     ],
 )
-def test_get_datis(airport_icao):
+def test_get_datis(airport_icao: str):
     api = ClowdIoDATISAPI()
     atis = api.request_datis(airport_icao)
     assert "ATIS" in atis
