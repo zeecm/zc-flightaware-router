@@ -7,7 +7,7 @@ if not sys.platform.startswith("win"):
 
 from PySide6.QtCore import Qt
 from pytest_mock import MockerFixture
-from pytestqt.qtbot import QtBot
+from pytestqt.qtbot import QtBot  # type: ignore
 
 from zc_flightplan_toolkit.gui_window import FlightAwareRouter
 
