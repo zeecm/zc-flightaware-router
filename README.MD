@@ -1,8 +1,8 @@
-# ZC's FlightAware Router
+# ZC's FlightPlanning Toolkit
 
-This is a simple proof of concept application that interfaces with FlightAware's API to pull airport and route information.
+This is a simple proof of concept application that interfaces with FlightAware's API as well as FAA NOTAMS to pull airport, route information and Tracks Information.
 
-This application uses PySide6 and Pandas
+This application uses Qt for Pythn and Pandas
 
 ## Installation
 
@@ -15,3 +15,4 @@ This application uses PySide6 and Pandas
 2. PyInstaller is included in dev extras_require, you can use the following code to generate an executable:
 
 `pyinstaller --noconfirm --onefile --name zc-flightaware-router main.py`
+

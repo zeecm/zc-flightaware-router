@@ -165,20 +165,28 @@ class Ui_mainWindow(object):
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.tracks_tabs = QTabWidget(self.tracks_information_tab)
         self.tracks_tabs.setObjectName("tracks_tabs")
-        self.tab = QWidget()
-        self.tab.setObjectName("tab")
-        self.get_north_atlantic_tracks_button = QPushButton(self.tab)
+        self.north_atlantic_tracks_tab = QWidget()
+        self.north_atlantic_tracks_tab.setObjectName("north_atlantic_tracks_tab")
+        self.get_north_atlantic_tracks_button = QPushButton(
+            self.north_atlantic_tracks_tab
+        )
         self.get_north_atlantic_tracks_button.setObjectName(
             "get_north_atlantic_tracks_button"
         )
         self.get_north_atlantic_tracks_button.setGeometry(QRect(10, 10, 191, 24))
-        self.north_atlantic_text_display = QTextBrowser(self.tab)
+        self.north_atlantic_text_display = QTextBrowser(self.north_atlantic_tracks_tab)
         self.north_atlantic_text_display.setObjectName("north_atlantic_text_display")
         self.north_atlantic_text_display.setGeometry(QRect(10, 40, 511, 741))
-        self.tracks_tabs.addTab(self.tab, "")
-        self.tab_2 = QWidget()
-        self.tab_2.setObjectName("tab_2")
-        self.tracks_tabs.addTab(self.tab_2, "")
+        self.tracks_tabs.addTab(self.north_atlantic_tracks_tab, "")
+        self.pacific_tracks_tab = QWidget()
+        self.pacific_tracks_tab.setObjectName("pacific_tracks_tab")
+        self.get_pacific_tracks_button = QPushButton(self.pacific_tracks_tab)
+        self.get_pacific_tracks_button.setObjectName("get_pacific_tracks_button")
+        self.get_pacific_tracks_button.setGeometry(QRect(10, 10, 191, 24))
+        self.pacific_tracks_display = QTextBrowser(self.pacific_tracks_tab)
+        self.pacific_tracks_display.setObjectName("pacific_tracks_display")
+        self.pacific_tracks_display.setGeometry(QRect(10, 40, 931, 741))
+        self.tracks_tabs.addTab(self.pacific_tracks_tab, "")
 
         self.gridLayout_4.addWidget(self.tracks_tabs, 0, 0, 1, 1)
 
@@ -214,7 +222,7 @@ class Ui_mainWindow(object):
     def retranslateUi(self, mainWindow):
         mainWindow.setWindowTitle(
             QCoreApplication.translate(
-                "mainWindow", "ZhaoCong's FlightAware Router", None
+                "mainWindow", "ZhaoCong's Flight Planning Tool", None
             )
         )
         self.actionPreferences.setText(
@@ -249,12 +257,15 @@ class Ui_mainWindow(object):
             )
         )
         self.tracks_tabs.setTabText(
-            self.tracks_tabs.indexOf(self.tab),
+            self.tracks_tabs.indexOf(self.north_atlantic_tracks_tab),
             QCoreApplication.translate("mainWindow", "North Atlantic Tracks", None),
         )
+        self.get_pacific_tracks_button.setText(
+            QCoreApplication.translate("mainWindow", "Fetch Pacific Tracks Data", None)
+        )
         self.tracks_tabs.setTabText(
-            self.tracks_tabs.indexOf(self.tab_2),
-            QCoreApplication.translate("mainWindow", "Tab 2", None),
+            self.tracks_tabs.indexOf(self.pacific_tracks_tab),
+            QCoreApplication.translate("mainWindow", "Pacific Tracks", None),
         )
         self.main_tabs.setTabText(
             self.main_tabs.indexOf(self.tracks_information_tab),
