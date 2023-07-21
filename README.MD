@@ -16,3 +16,9 @@ This application uses Qt for Pythn and Pandas
 
 `pyinstaller --noconfirm --onefile --name zc-flightaware-router main.py`
 
+## Screenshots:
+
+![Route Information](https://i.ibb.co/Z6GBBZX/image.png)
+![Airport Information](https://i.ibb.co/PQJz61z/image.png)
+![NAT Tracks](https://i.ibb.co/9ythRzV/image.png)
+![Pacific Tracks](https://i.ibb.co/4ZXLx60/image.png)
