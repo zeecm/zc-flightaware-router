@@ -110,9 +110,3 @@ class FlightAwareAPI:
         except KeyError:
             route_info = pd.DataFrame({"error": "invalid or missing data"}, index=[0])
         return route_info
-
-
-if __name__ == "__main__":
-    api = FlightAwareAPI()
-    route_info = api.get_route_info("KLAX", "KJFK")
-    print("pass")

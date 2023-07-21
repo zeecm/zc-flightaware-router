@@ -130,6 +130,57 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tracks_information_tab">
+       <attribute name="title">
+        <string>Tracks Information</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QTabWidget" name="tracks_tabs">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>North Atlantic Tracks</string>
+             </attribute>
+             <widget class="QPushButton" name="get_north_atlantic_tracks_button">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>10</y>
+                <width>191</width>
+                <height>24</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Fetch North Atlantic Tracks Data</string>
+              </property>
+             </widget>
+             <widget class="QTextBrowser" name="north_atlantic_text_display">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>40</y>
+                <width>511</width>
+                <height>741</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="tab_2">
+             <attribute name="title">
+              <string>Tab 2</string>
+             </attribute>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>

@@ -1,8 +1,10 @@
+from loguru import logger
 from PySide6.QtWidgets import QMainWindow
 
 from zc_flightaware_router.flightaware_api import FlightAwareAPI
 from zc_flightaware_router.gui_classes import PandasModel
 from zc_flightaware_router.mainwindow import Ui_mainWindow
+from zc_flightaware_router.tracks import get_north_atlantic_tracks
 
 
 class FlightAwareRouter(QMainWindow):
@@ -17,6 +19,9 @@ class FlightAwareRouter(QMainWindow):
         )
         self.ui.get_route_info_button.clicked.connect(
             self._get_route_info_button_clicked
+        )
+        self.ui.get_north_atlantic_tracks_button.clicked.connect(
+            self._get_north_atlantic_tracks_button_clicked
         )
 
     def _get_airport_button_clicked(self):
@@ -37,3 +42,8 @@ class FlightAwareRouter(QMainWindow):
         self.ui.route_info_table.setModel(model)
         self.ui.route_info_table.resizeColumnsToContents()
         self.ui.route_info_table.resizeRowsToContents()
+
+    def _get_north_atlantic_tracks_button_clicked(self):
+        tracks_data = get_north_atlantic_tracks()
+        logger.debug(tracks_data)
+        self.ui.north_atlantic_text_display.setHtml(tracks_data)

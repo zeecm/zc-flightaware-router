@@ -56,6 +56,7 @@ from PySide6.QtWidgets import (
     QStatusBar,
     QTableView,
     QTabWidget,
+    QTextBrowser,
     QVBoxLayout,
     QWidget,
 )
@@ -156,6 +157,34 @@ class Ui_mainWindow(object):
         self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
 
         self.main_tabs.addTab(self.airport_info_tab, "")
+        self.tracks_information_tab = QWidget()
+        self.tracks_information_tab.setObjectName("tracks_information_tab")
+        self.gridLayout_5 = QGridLayout(self.tracks_information_tab)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.gridLayout_4 = QGridLayout()
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.tracks_tabs = QTabWidget(self.tracks_information_tab)
+        self.tracks_tabs.setObjectName("tracks_tabs")
+        self.tab = QWidget()
+        self.tab.setObjectName("tab")
+        self.get_north_atlantic_tracks_button = QPushButton(self.tab)
+        self.get_north_atlantic_tracks_button.setObjectName(
+            "get_north_atlantic_tracks_button"
+        )
+        self.get_north_atlantic_tracks_button.setGeometry(QRect(10, 10, 191, 24))
+        self.north_atlantic_text_display = QTextBrowser(self.tab)
+        self.north_atlantic_text_display.setObjectName("north_atlantic_text_display")
+        self.north_atlantic_text_display.setGeometry(QRect(10, 40, 511, 741))
+        self.tracks_tabs.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.tracks_tabs.addTab(self.tab_2, "")
+
+        self.gridLayout_4.addWidget(self.tracks_tabs, 0, 0, 1, 1)
+
+        self.gridLayout_5.addLayout(self.gridLayout_4, 0, 0, 1, 1)
+
+        self.main_tabs.addTab(self.tracks_information_tab, "")
 
         self.gridLayout_2.addWidget(self.main_tabs, 0, 0, 1, 1)
 
@@ -176,6 +205,7 @@ class Ui_mainWindow(object):
         self.retranslateUi(mainWindow)
 
         self.main_tabs.setCurrentIndex(0)
+        self.tracks_tabs.setCurrentIndex(0)
 
         QMetaObject.connectSlotsByName(mainWindow)
 
@@ -212,6 +242,23 @@ class Ui_mainWindow(object):
         self.main_tabs.setTabText(
             self.main_tabs.indexOf(self.airport_info_tab),
             QCoreApplication.translate("mainWindow", "Airport Information", None),
+        )
+        self.get_north_atlantic_tracks_button.setText(
+            QCoreApplication.translate(
+                "mainWindow", "Fetch North Atlantic Tracks Data", None
+            )
+        )
+        self.tracks_tabs.setTabText(
+            self.tracks_tabs.indexOf(self.tab),
+            QCoreApplication.translate("mainWindow", "North Atlantic Tracks", None),
+        )
+        self.tracks_tabs.setTabText(
+            self.tracks_tabs.indexOf(self.tab_2),
+            QCoreApplication.translate("mainWindow", "Tab 2", None),
+        )
+        self.main_tabs.setTabText(
+            self.main_tabs.indexOf(self.tracks_information_tab),
+            QCoreApplication.translate("mainWindow", "Tracks Information", None),
         )
         self.menuFile.setTitle(QCoreApplication.translate("mainWindow", "File", None))
 
