@@ -33,7 +33,14 @@ def test_get_route_info(flightaware_api: FlightInfoAPI):
     assert "route" in route_info.columns
 
 
-def test_get_datis():
+@pytest.mark.parametrize(
+    "airport_icao",
+    [
+        ("KLAX"),
+        ("KMIA"),
+    ],
+)
+def test_get_datis(airport_icao: str):
     api = ClowdIoDATISAPI()
-    atis = api.request_datis("KLAX")
-    assert "LAX ATIS INFO" in atis
+    atis = api.request_datis(airport_icao)
+    assert "ATIS" in atis

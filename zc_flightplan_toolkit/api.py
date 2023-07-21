@@ -42,15 +42,21 @@ class ClowdIoDATISAPI:
         return error_msg
 
     def _process_datis(self, datis_text: str) -> str:
-        datis_text = datis_text[1:-1]
-        datis_info = json.loads(datis_text)
+        datis_list = eval(datis_text)
 
-        airport = datis_info[DATISInfo.AIRPORT.value]
-        atis_type = datis_info[DATISInfo.TYPE.value]
-        atis_code = datis_info[DATISInfo.CODE.value]
-        atis = datis_info[DATISInfo.ATIS.value]
+        final_atis = []
 
-        return f"Airport: {airport} \nATIS Type: {atis_type} \nATIS Code: {atis_code} \nATIS: {atis} \n"
+        for datis_info in datis_list:
+            airport = datis_info[DATISInfo.AIRPORT.value]
+            atis_type = datis_info[DATISInfo.TYPE.value]
+            atis_code = datis_info[DATISInfo.CODE.value]
+            atis = datis_info[DATISInfo.ATIS.value]
+
+            final_atis.append(
+                f"Airport: {airport} \nATIS Type: {atis_type} \nATIS Code: {atis_code} \nATIS: {atis} \n"
+            )
+
+        return "\n".join(final_atis)
 
 
 class FlightInfoAPI(Protocol):
