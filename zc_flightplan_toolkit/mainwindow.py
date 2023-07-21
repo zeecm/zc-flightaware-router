@@ -154,6 +154,16 @@ class Ui_mainWindow(object):
 
         self.verticalLayout.addWidget(self.airport_info_table)
 
+        self.label = QLabel(self.airport_info_tab)
+        self.label.setObjectName("label")
+
+        self.verticalLayout.addWidget(self.label)
+
+        self.atis_display = QTextBrowser(self.airport_info_tab)
+        self.atis_display.setObjectName("atis_display")
+
+        self.verticalLayout.addWidget(self.atis_display)
+
         self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
 
         self.main_tabs.addTab(self.airport_info_tab, "")
@@ -247,6 +257,7 @@ class Ui_mainWindow(object):
         self.get_airport_info_button.setText(
             QCoreApplication.translate("mainWindow", "Get Airport Info", None)
         )
+        self.label.setText(QCoreApplication.translate("mainWindow", "D-ATIS", None))
         self.main_tabs.setTabText(
             self.main_tabs.indexOf(self.airport_info_tab),
             QCoreApplication.translate("mainWindow", "Airport Information", None),
