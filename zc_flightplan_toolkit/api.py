@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+from functools import cache
 from typing import Any, Dict, List, Literal, Optional, Protocol
 
 import pandas as pd
 import requests
+from frozendict import frozendict
 from loguru import logger
 from requests import Response
 
@@ -99,8 +101,15 @@ class FlightAwareAPI:
         api_endpoint: str,
         params: Optional[Dict[str, str | int]] = None,
         timeout: int = 5,
+        cache: bool = True,
     ) -> Response:
         params = params or {}
+
+        if cache:
+            frozen_params = frozendict(params)
+            return self._cached_api_call(api_endpoint, frozen_params, timeout)
+
+        logger.info(f"making 1 api call to {self._api_url}")
         response = requests.get(
             f"{self._api_url}/{api_endpoint}",
             params=params,
@@ -111,6 +120,17 @@ class FlightAwareAPI:
             error = response.text
             logger.warning(f"Did not manage to make a successful connection: {error}")
         return response
+
+    @cache
+    def _cached_api_call(
+        self,
+        api_endpoint: str,
+        frozen_params: Optional[frozendict[str, str | int]] = None,
+        timeout: int = 5,
+    ) -> Response:
+        frozen_params = frozen_params or frozendict()
+        params = dict(frozen_params)
+        return self._make_api_call(api_endpoint, params, timeout, cache=False)
 
     def get_airport_information(self, airport_id: str) -> pd.DataFrame:
         """Accepts airport ID in the form of ICAO or LID airport code
