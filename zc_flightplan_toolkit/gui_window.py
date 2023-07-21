@@ -86,10 +86,8 @@ class FlightPlanToolkit(QMainWindow):
 
     def _open_settings_dialog(self):
         api_key = self.preferences.get_setting(Preferences.AERO_API_KEY.value)
-        logger.debug(api_key)
         dialog = PreferencesDialog(default_api_key=api_key)
         if _ := dialog.exec():
             api_key = dialog.aero_api_key
-        logger.debug(api_key)
         if _ := self.preferences.set_setting(Preferences.AERO_API_KEY.value, api_key):
             self._api.reinitialize(api_key=api_key)
