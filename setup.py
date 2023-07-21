@@ -1,9 +1,9 @@
 from setuptools import find_packages, setup
 
-PACKAGE = "zc_flightaware_router"
+PACKAGE = "zc_flightplan_toolkit"
 
 setup(
-    name="zc-flightaware-router",
+    name="zc-flightplan-toolkit",
     version="0.0.1",
     packages=find_packages(include=PACKAGE),
     install_requires=[
@@ -28,6 +28,7 @@ setup(
             "pyright",
             "pylint",
             "pyinstaller",
+            "pytest-qt; platform_system=='Windows'",
         ]
     },
 )

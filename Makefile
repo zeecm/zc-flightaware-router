@@ -1,6 +1,6 @@
 .PHONY: install format check test
 
-PACKAGE = "zc_flightaware_router"
+PACKAGE = "zc_flightplan_toolkit"
 
 install:
 	pip install -e .[dev]
@@ -9,7 +9,7 @@ install:
 
 check:
 	-pylint $(PACKAGE)
-	pyright $(PACKAGE)
+	pyright $(PACKAGE) tests/
 
 test:
 	pytest --cov=$(PACKAGE) tests/
