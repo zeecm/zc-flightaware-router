@@ -1,9 +1,14 @@
+import sys
+
 import pytest
 from PySide6.QtCore import Qt
 from pytest_mock import MockerFixture
 from pytestqt.qtbot import QtBot
 
 from zc_flightplan_toolkit.gui_window import FlightAwareRouter
+
+if not sys.platform.startswith("win"):
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 @pytest.mark.parametrize(
