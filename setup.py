@@ -28,7 +28,7 @@ setup(
             "pyright",
             "pylint",
             "pyinstaller",
-            "pytest-qt",
+            "pytest-qt; platform_system=='Windows'",
         ]
     },
 )
