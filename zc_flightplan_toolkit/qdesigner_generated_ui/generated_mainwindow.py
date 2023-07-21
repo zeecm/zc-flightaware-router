@@ -42,6 +42,8 @@ from PySide6.QtGui import (
     QTransform,
 )
 from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QAbstractScrollArea,
     QApplication,
     QGridLayout,
     QHBoxLayout,
@@ -67,8 +69,8 @@ class Ui_mainWindow(object):
         if not mainWindow.objectName():
             mainWindow.setObjectName("mainWindow")
         mainWindow.resize(1506, 930)
-        self.actionPreferences = QAction(mainWindow)
-        self.actionPreferences.setObjectName("actionPreferences")
+        self.toolbar_preferences_button = QAction(mainWindow)
+        self.toolbar_preferences_button.setObjectName("toolbar_preferences_button")
         self.centralwidget = QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QGridLayout(self.centralwidget)
@@ -115,6 +117,11 @@ class Ui_mainWindow(object):
 
         self.route_info_table = QTableView(self.route_info_tab)
         self.route_info_table.setObjectName("route_info_table")
+        self.route_info_table.setContextMenuPolicy(Qt.ActionsContextMenu)
+        self.route_info_table.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
+        self.route_info_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.route_info_table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.route_info_table.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
         self.verticalLayout_2.addWidget(self.route_info_table)
 
@@ -151,6 +158,12 @@ class Ui_mainWindow(object):
 
         self.airport_info_table = QTableView(self.airport_info_tab)
         self.airport_info_table.setObjectName("airport_info_table")
+        self.airport_info_table.setContextMenuPolicy(Qt.ActionsContextMenu)
+        self.airport_info_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.airport_info_table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.airport_info_table.setHorizontalScrollMode(
+            QAbstractItemView.ScrollPerPixel
+        )
 
         self.verticalLayout.addWidget(self.airport_info_table)
 
@@ -177,25 +190,37 @@ class Ui_mainWindow(object):
         self.tracks_tabs.setObjectName("tracks_tabs")
         self.north_atlantic_tracks_tab = QWidget()
         self.north_atlantic_tracks_tab.setObjectName("north_atlantic_tracks_tab")
+        self.gridLayout_6 = QGridLayout(self.north_atlantic_tracks_tab)
+        self.gridLayout_6.setObjectName("gridLayout_6")
         self.get_north_atlantic_tracks_button = QPushButton(
             self.north_atlantic_tracks_tab
         )
         self.get_north_atlantic_tracks_button.setObjectName(
             "get_north_atlantic_tracks_button"
         )
-        self.get_north_atlantic_tracks_button.setGeometry(QRect(10, 10, 191, 24))
+
+        self.gridLayout_6.addWidget(self.get_north_atlantic_tracks_button, 0, 0, 1, 1)
+
         self.north_atlantic_text_display = QTextBrowser(self.north_atlantic_tracks_tab)
         self.north_atlantic_text_display.setObjectName("north_atlantic_text_display")
-        self.north_atlantic_text_display.setGeometry(QRect(10, 40, 511, 741))
+
+        self.gridLayout_6.addWidget(self.north_atlantic_text_display, 1, 0, 1, 1)
+
         self.tracks_tabs.addTab(self.north_atlantic_tracks_tab, "")
         self.pacific_tracks_tab = QWidget()
         self.pacific_tracks_tab.setObjectName("pacific_tracks_tab")
+        self.gridLayout_7 = QGridLayout(self.pacific_tracks_tab)
+        self.gridLayout_7.setObjectName("gridLayout_7")
         self.get_pacific_tracks_button = QPushButton(self.pacific_tracks_tab)
         self.get_pacific_tracks_button.setObjectName("get_pacific_tracks_button")
-        self.get_pacific_tracks_button.setGeometry(QRect(10, 10, 191, 24))
+
+        self.gridLayout_7.addWidget(self.get_pacific_tracks_button, 0, 0, 1, 1)
+
         self.pacific_tracks_display = QTextBrowser(self.pacific_tracks_tab)
         self.pacific_tracks_display.setObjectName("pacific_tracks_display")
-        self.pacific_tracks_display.setGeometry(QRect(10, 40, 931, 741))
+
+        self.gridLayout_7.addWidget(self.pacific_tracks_display, 1, 0, 1, 1)
+
         self.tracks_tabs.addTab(self.pacific_tracks_tab, "")
 
         self.gridLayout_4.addWidget(self.tracks_tabs, 0, 0, 1, 1)
@@ -218,7 +243,7 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuFile.menuAction())
-        self.menuFile.addAction(self.actionPreferences)
+        self.menuFile.addAction(self.toolbar_preferences_button)
 
         self.retranslateUi(mainWindow)
 
@@ -235,7 +260,7 @@ class Ui_mainWindow(object):
                 "mainWindow", "ZhaoCong's Flight Planning Tool", None
             )
         )
-        self.actionPreferences.setText(
+        self.toolbar_preferences_button.setText(
             QCoreApplication.translate("mainWindow", "Preferences", None)
         )
         self.start_airport_label.setText(
