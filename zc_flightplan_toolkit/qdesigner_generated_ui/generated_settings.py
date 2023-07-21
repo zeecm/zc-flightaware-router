@@ -58,7 +58,7 @@ class Ui_preferences_dialog(object):
         if not preferences_dialog.objectName():
             preferences_dialog.setObjectName("preferences_dialog")
         preferences_dialog.setWindowModality(Qt.NonModal)
-        preferences_dialog.resize(226, 71)
+        preferences_dialog.resize(506, 72)
         preferences_dialog.setModal(False)
         self.gridLayout = QGridLayout(preferences_dialog)
         self.gridLayout.setObjectName("gridLayout")
