@@ -68,7 +68,7 @@ class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
         if not mainWindow.objectName():
             mainWindow.setObjectName("mainWindow")
-        mainWindow.resize(1506, 930)
+        mainWindow.resize(1455, 930)
         self.toolbar_preferences_button = QAction(mainWindow)
         self.toolbar_preferences_button.setObjectName("toolbar_preferences_button")
         self.centralwidget = QWidget(mainWindow)
@@ -86,7 +86,7 @@ class Ui_mainWindow(object):
         self.verticalLayout_2.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 1000, -1)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, -1)
         self.start_airport_label = QLabel(self.route_info_tab)
         self.start_airport_label.setObjectName("start_airport_label")
 
@@ -137,7 +137,7 @@ class Ui_mainWindow(object):
         self.verticalLayout.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 1200, -1)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, -1)
         self.enter_airport_id_label = QLabel(self.airport_info_tab)
         self.enter_airport_id_label.setObjectName("enter_airport_id_label")
 
@@ -234,7 +234,7 @@ class Ui_mainWindow(object):
         mainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(mainWindow)
         self.menubar.setObjectName("menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1506, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1455, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
         mainWindow.setMenuBar(self.menubar)
