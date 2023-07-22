@@ -102,11 +102,108 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="1">
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QGridLayout" name="gridLayout_8" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
           <property name="topMargin">
            <number>0</number>
           </property>
-          <item>
+          <item row="14" column="3">
+           <widget class="QTableView" name="decoded_metar_table">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>500</height>
+             </size>
+            </property>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </item>
+          <item row="11" column="3">
+           <widget class="QLabel" name="metar_label">
+            <property name="text">
+             <string>METAR</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QLabel" name="runway_info_label">
+            <property name="text">
+             <string>Runways</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="4">
+           <widget class="QTableView" name="airport_info_table">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="contextMenuPolicy">
+             <enum>Qt::ActionsContextMenu</enum>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLabel" name="map_label">
+            <property name="text">
+             <string>Map</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="3">
+           <widget class="QTextBrowser" name="metar_display">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0" colspan="2">
+           <widget class="CustomQTableView" name="runway_info_table">
+            <property name="selectionMode">
+             <enum>QAbstractItemView::SingleSelection</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
             <property name="leftMargin">
              <number>0</number>
@@ -139,31 +236,39 @@
             </item>
            </layout>
           </item>
-          <item>
-           <widget class="QTableView" name="airport_info_table">
-            <property name="contextMenuPolicy">
-             <enum>Qt::ActionsContextMenu</enum>
-            </property>
-            <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
-            </property>
-            <property name="verticalScrollMode">
-             <enum>QAbstractItemView::ScrollPerPixel</enum>
-            </property>
-            <property name="horizontalScrollMode">
-             <enum>QAbstractItemView::ScrollPerPixel</enum>
+          <item row="10" column="3">
+           <widget class="QGraphicsView" name="runway_map_view">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="label">
+          <item row="11" column="0" colspan="2">
+           <widget class="QLabel" name="datis_info_label">
             <property name="text">
              <string>D-ATIS</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QTextBrowser" name="atis_display"/>
+          <item row="13" column="3">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Decoded METAR</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0" rowspan="3" colspan="2">
+           <widget class="QTextBrowser" name="atis_display">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -249,6 +354,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomQTableView</class>
+   <extends>QTableView</extends>
+   <header>zc_flightplan_toolkit.gui_classes</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

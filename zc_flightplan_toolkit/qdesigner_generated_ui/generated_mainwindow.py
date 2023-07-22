@@ -45,10 +45,12 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QAbstractScrollArea,
     QApplication,
+    QGraphicsView,
     QGridLayout,
     QHBoxLayout,
     QHeaderView,
     QLabel,
+    QLayout,
     QLineEdit,
     QMainWindow,
     QMenu,
@@ -62,6 +64,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+from zc_flightplan_toolkit.gui_classes import CustomQTableView
 
 
 class Ui_mainWindow(object):
@@ -132,9 +136,70 @@ class Ui_mainWindow(object):
         self.airport_info_tab.setObjectName("airport_info_tab")
         self.gridLayout = QGridLayout(self.airport_info_tab)
         self.gridLayout.setObjectName("gridLayout")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout.setContentsMargins(-1, 0, -1, -1)
+        self.gridLayout_8 = QGridLayout()
+        self.gridLayout_8.setObjectName("gridLayout_8")
+        self.gridLayout_8.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.gridLayout_8.setContentsMargins(-1, 0, -1, -1)
+        self.decoded_metar_table = QTableView(self.airport_info_tab)
+        self.decoded_metar_table.setObjectName("decoded_metar_table")
+        self.decoded_metar_table.setMaximumSize(QSize(16777215, 500))
+        self.decoded_metar_table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.decoded_metar_table.setHorizontalScrollMode(
+            QAbstractItemView.ScrollPerPixel
+        )
+        self.decoded_metar_table.horizontalHeader().setVisible(False)
+
+        self.gridLayout_8.addWidget(self.decoded_metar_table, 14, 3, 1, 1)
+
+        self.metar_label = QLabel(self.airport_info_tab)
+        self.metar_label.setObjectName("metar_label")
+
+        self.gridLayout_8.addWidget(self.metar_label, 11, 3, 1, 1)
+
+        self.runway_info_label = QLabel(self.airport_info_tab)
+        self.runway_info_label.setObjectName("runway_info_label")
+
+        self.gridLayout_8.addWidget(self.runway_info_label, 2, 0, 1, 2)
+
+        self.airport_info_table = QTableView(self.airport_info_tab)
+        self.airport_info_table.setObjectName("airport_info_table")
+        self.airport_info_table.setMaximumSize(QSize(16777215, 100))
+        self.airport_info_table.setContextMenuPolicy(Qt.ActionsContextMenu)
+        self.airport_info_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.airport_info_table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.airport_info_table.setHorizontalScrollMode(
+            QAbstractItemView.ScrollPerPixel
+        )
+
+        self.gridLayout_8.addWidget(self.airport_info_table, 1, 0, 1, 4)
+
+        self.map_label = QLabel(self.airport_info_tab)
+        self.map_label.setObjectName("map_label")
+
+        self.gridLayout_8.addWidget(self.map_label, 2, 3, 1, 1)
+
+        self.metar_display = QTextBrowser(self.airport_info_tab)
+        self.metar_display.setObjectName("metar_display")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(
+            self.metar_display.sizePolicy().hasHeightForWidth()
+        )
+        self.metar_display.setSizePolicy(sizePolicy)
+        self.metar_display.setMaximumSize(QSize(16777215, 50))
+
+        self.gridLayout_8.addWidget(self.metar_display, 12, 3, 1, 1)
+
+        self.runway_info_table = CustomQTableView(self.airport_info_tab)
+        self.runway_info_table.setObjectName("runway_info_table")
+        self.runway_info_table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.runway_info_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.runway_info_table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.runway_info_table.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+
+        self.gridLayout_8.addWidget(self.runway_info_table, 10, 0, 1, 2)
+
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, -1)
@@ -154,30 +219,34 @@ class Ui_mainWindow(object):
 
         self.horizontalLayout.addWidget(self.get_airport_info_button)
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.gridLayout_8.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
-        self.airport_info_table = QTableView(self.airport_info_tab)
-        self.airport_info_table.setObjectName("airport_info_table")
-        self.airport_info_table.setContextMenuPolicy(Qt.ActionsContextMenu)
-        self.airport_info_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.airport_info_table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.airport_info_table.setHorizontalScrollMode(
-            QAbstractItemView.ScrollPerPixel
+        self.runway_map_view = QGraphicsView(self.airport_info_tab)
+        self.runway_map_view.setObjectName("runway_map_view")
+        sizePolicy.setHeightForWidth(
+            self.runway_map_view.sizePolicy().hasHeightForWidth()
         )
+        self.runway_map_view.setSizePolicy(sizePolicy)
 
-        self.verticalLayout.addWidget(self.airport_info_table)
+        self.gridLayout_8.addWidget(self.runway_map_view, 10, 3, 1, 1)
+
+        self.datis_info_label = QLabel(self.airport_info_tab)
+        self.datis_info_label.setObjectName("datis_info_label")
+
+        self.gridLayout_8.addWidget(self.datis_info_label, 11, 0, 1, 2)
 
         self.label = QLabel(self.airport_info_tab)
         self.label.setObjectName("label")
 
-        self.verticalLayout.addWidget(self.label)
+        self.gridLayout_8.addWidget(self.label, 13, 3, 1, 1)
 
         self.atis_display = QTextBrowser(self.airport_info_tab)
         self.atis_display.setObjectName("atis_display")
+        self.atis_display.setMinimumSize(QSize(0, 0))
 
-        self.verticalLayout.addWidget(self.atis_display)
+        self.gridLayout_8.addWidget(self.atis_display, 12, 0, 3, 2)
 
-        self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_8, 0, 1, 1, 1)
 
         self.main_tabs.addTab(self.airport_info_tab, "")
         self.tracks_information_tab = QWidget()
@@ -276,13 +345,25 @@ class Ui_mainWindow(object):
             self.main_tabs.indexOf(self.route_info_tab),
             QCoreApplication.translate("mainWindow", "Route Information", None),
         )
+        self.metar_label.setText(
+            QCoreApplication.translate("mainWindow", "METAR", None)
+        )
+        self.runway_info_label.setText(
+            QCoreApplication.translate("mainWindow", "Runways", None)
+        )
+        self.map_label.setText(QCoreApplication.translate("mainWindow", "Map", None))
         self.enter_airport_id_label.setText(
             QCoreApplication.translate("mainWindow", "Enter Airport ID:", None)
         )
         self.get_airport_info_button.setText(
             QCoreApplication.translate("mainWindow", "Get Airport Info", None)
         )
-        self.label.setText(QCoreApplication.translate("mainWindow", "D-ATIS", None))
+        self.datis_info_label.setText(
+            QCoreApplication.translate("mainWindow", "D-ATIS", None)
+        )
+        self.label.setText(
+            QCoreApplication.translate("mainWindow", "Decoded METAR", None)
+        )
         self.main_tabs.setTabText(
             self.main_tabs.indexOf(self.airport_info_tab),
             QCoreApplication.translate("mainWindow", "Airport Information", None),

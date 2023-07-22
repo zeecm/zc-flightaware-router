@@ -19,4 +19,5 @@ jobs:
     - name: Run Unit Tests
       env:
         AERO_API_KEY: ${{ secrets.AERO_API_KEY }}
+        CHECKWX_API_KEY: ${{ secrets.CHECKWX_API_KEY }}
       run: make test

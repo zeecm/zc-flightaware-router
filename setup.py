@@ -30,6 +30,7 @@ setup(
             "pylint",
             "pyinstaller",
             "pytest-qt; platform_system=='Windows'",
+            "pandas-stubs",
         ]
     },
 )

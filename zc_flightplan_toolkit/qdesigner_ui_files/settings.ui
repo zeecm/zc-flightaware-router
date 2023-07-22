@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>506</width>
-    <height>72</height>
+    <height>99</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,12 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="0">
+    <widget class="QLineEdit" name="checkwx_api_key_lineedit"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLineEdit" name="aero_api_key_lineedit"/>
+   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="aero_api_key_label">
      <property name="text">
@@ -27,7 +33,14 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1" rowspan="2">
+   <item row="2" column="0">
+    <widget class="QLabel" name="check_wx_api_key_label">
+     <property name="text">
+      <string>Check WX API Key</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" rowspan="3">
     <widget class="QDialogButtonBox" name="save_cancel_button_box">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -36,9 +49,6 @@
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
      </property>
     </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLineEdit" name="aero_api_key_lineedit"/>
    </item>
   </layout>
  </widget>
