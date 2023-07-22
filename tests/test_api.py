@@ -1,7 +1,12 @@
 import pandas as pd
 import pytest
 
-from zc_flightplan_toolkit.api import ClowdIoDATISAPI, FlightAwareAPI, FlightInfoAPI
+from zc_flightplan_toolkit.api import (
+    CheckWxAPI,
+    ClowdIoDATISAPI,
+    FlightAwareAPI,
+    FlightInfoAPI,
+)
 
 
 @pytest.fixture
@@ -44,3 +49,29 @@ def test_get_datis(airport_icao: str):
     api = ClowdIoDATISAPI()
     atis = api.request_datis(airport_icao)
     assert "ATIS" in atis
+
+
+@pytest.mark.parametrize(
+    "icao",
+    [
+        ("wsss"),
+        ("KLAX"),
+    ],
+)
+def test_weather_api_raw_metar(icao):
+    api = CheckWxAPI()
+    metar = api.get_metar(icao)
+    assert isinstance(metar, str)
+
+
+@pytest.mark.parametrize(
+    "icao",
+    [
+        ("wsss"),
+        ("KLAX"),
+    ],
+)
+def test_weather_api_decoded_metar(icao):
+    api = CheckWxAPI()
+    metar = api.get_metar(icao, decoded=True)
+    assert isinstance(metar, pd.DataFrame)

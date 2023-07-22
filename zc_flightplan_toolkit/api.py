@@ -80,7 +80,7 @@ class WeatherAPI(Protocol):
     def get_metar(self, icao: str) -> str:
         ...
 
-    def get_metar(self, icao: str, **kwargs) -> Union[str, pd.DataFrame]:
+    def get_metar(self, icao: str, decoded: bool = False) -> Union[str, pd.DataFrame]:
         ...
 
     def get_taf(self, icao: str) -> str:
@@ -97,8 +97,16 @@ class CheckWxAPI(BaseAPI):
         self._retrieved_icao: str = ""
         self._decoded_metar: Dict[str, Any] = {}
 
-    def get_metar(self, icao: str, **kwargs) -> Union[str, pd.DataFrame]:
-        if kwargs.get("decoded", False):
+    @overload
+    def get_metar(self, icao: str, decoded: bool) -> pd.DataFrame:
+        ...
+
+    @overload
+    def get_metar(self, icao: str) -> str:
+        ...
+
+    def get_metar(self, icao: str, decoded: bool = False) -> Union[str, pd.DataFrame]:
+        if decoded:
             return self._get_decoded_metar(icao)
 
         if not self._decoded_metar and icao == self._retrieved_icao:
@@ -200,7 +208,7 @@ class FlightInfoAPI(Protocol):
     def get_metar(self, decoded: bool) -> pd.DataFrame:
         ...
 
-    def get_metar(self, **kwargs) -> Union[str, pd.DataFrame]:
+    def get_metar(self, decoded: bool = False) -> Union[str, pd.DataFrame]:
         ...
 
     @classmethod
@@ -306,9 +314,17 @@ class FlightAwareAPI(BaseAPI):
         logger.warning(error_msg)
         return RunwayInfo()
 
-    def get_metar(self, **kwargs) -> Union[str, pd.DataFrame]:
+    @overload
+    def get_metar(self) -> str:
+        ...
+
+    @overload
+    def get_metar(self, decoded: bool) -> pd.DataFrame:
+        ...
+
+    def get_metar(self, decoded: bool = False) -> Union[str, pd.DataFrame]:
         if self.current_airport_icao is not None:
-            if kwargs.get("decoded", False):
+            if decoded:
                 return self._weather_api.get_metar(
                     self.current_airport_icao, decoded=True
                 )

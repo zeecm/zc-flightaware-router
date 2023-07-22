@@ -9,9 +9,17 @@ import pandas as pd
 from pandas.testing import assert_frame_equal
 from PySide6.QtCore import Qt
 from pytest_mock import MockerFixture
+from pytest_mock.plugin import MockType
 from pytestqt.qtbot import QtBot  # type: ignore
 
 from zc_flightplan_toolkit.gui_window import FlightPlanToolkit
+
+
+@pytest.fixture(autouse=True)
+def mock_fetch_metar(mocker: MockerFixture) -> MockType:
+    return mocker.patch(
+        "zc_flightplan_toolkit.gui_window.FlightPlanToolkit._fetch_metar"
+    )
 
 
 @pytest.mark.parametrize(
@@ -152,4 +160,5 @@ def test_airport_runways_table_gets_populated(qtbot: QtBot, mocker: MockerFixtur
     toolkit.ui.airport_id_lineedit.setText("wsss")
     qtbot.mouseClick(toolkit.ui.get_airport_info_button, Qt.MouseButton.LeftButton)
 
-    assert_frame_equal(toolkit.ui.runway_info_table.model().get_data(), mock_data)
+    assert_frame_equal(toolkit.ui.runway_info_table.model().get_data(), mock_data)  # type: ignore
+    # self defined function
