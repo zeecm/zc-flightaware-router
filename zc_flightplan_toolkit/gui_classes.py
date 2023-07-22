@@ -33,9 +33,17 @@ class CustomQTableView(QTableView):
 class PandasModel(QAbstractTableModel):
     """A model to interface a Qt view with pandas dataframe"""
 
-    def __init__(self, dataframe: pd.DataFrame, parent=None):
+    def __init__(
+        self,
+        dataframe: pd.DataFrame,
+        show_index: bool = False,
+        show_headers: bool = True,
+        parent=None,
+    ):
         QAbstractTableModel.__init__(self, parent)
         self._dataframe = dataframe
+        self._show_index = show_index
+        self._show_headers = show_headers
 
     def rowCount(self, parent=QModelIndex()) -> int:
         """Override method from QAbstractTableModel
@@ -75,10 +83,14 @@ class PandasModel(QAbstractTableModel):
         """
         if role == Qt.ItemDataRole.DisplayRole:
             if orientation == Qt.Orientation.Horizontal:
-                return str(self._dataframe.columns[section])
+                return (
+                    str(self._dataframe.columns[section])
+                    if self._show_headers
+                    else None
+                )
 
             if orientation == Qt.Orientation.Vertical:
-                return None
+                return str(self._dataframe.index[section]) if self._show_index else None
 
         return None
 
@@ -87,17 +99,25 @@ class PandasModel(QAbstractTableModel):
 
 
 class PreferencesDialog(QDialog):
-    def __init__(self, parent: Optional[QWidget] = None, default_api_key: str = ""):
+    def __init__(
+        self,
+        parent: Optional[QWidget] = None,
+        default_aero_api_key: str = "",
+        default_checkwx_api_key: str = "",
+    ):
         super().__init__(parent)
         self.ui = Ui_preferences_dialog()
         self.ui.setupUi(self)
-        self.ui.aero_api_key_lineedit.setText(default_api_key)
+        self.ui.aero_api_key_lineedit.setText(default_aero_api_key)
+        self.ui.checkwx_api_key_lineedit.setText(default_checkwx_api_key)
 
-        self.aero_api_key = default_api_key
+        self.aero_api_key = default_aero_api_key
+        self.checkwx_api_key = default_checkwx_api_key
 
     def exec(self) -> bool:
         if super().exec():
             self.aero_api_key = self.ui.aero_api_key_lineedit.text()
+            self.checkwx_api_key = self.ui.checkwx_api_key_lineedit.text()
             return True
         return False
 

@@ -13,6 +13,10 @@ DATIS_ENDPOINT = "http://datis.clowd.io/api/"
 
 AERO_API_KEY = os.environ.get("AERO_API_KEY", "")
 
+CHECKWX_API_KEY = os.environ.get("CHECKWX_API_KEY", "")
+
+CHECKWX_API_URL = "https://api.checkwx.com"
+
 
 class FlightAwareAirportColumns(Enum):
     ICAO = "code_icao"
@@ -39,3 +43,4 @@ class DATISInfo(Enum):
 
 class Preferences(Enum):
     AERO_API_KEY = "aero_api_key"
+    CHECKWX_API_KEY = "checkwx_api_key"
