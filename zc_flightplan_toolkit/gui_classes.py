@@ -82,6 +82,9 @@ class PandasModel(QAbstractTableModel):
 
         return None
 
+    def get_data(self, view: bool = True) -> pd.DataFrame:
+        return self._dataframe if view else self._dataframe.copy()
+
 
 class PreferencesDialog(QDialog):
     def __init__(self, parent: Optional[QWidget] = None, default_api_key: str = ""):

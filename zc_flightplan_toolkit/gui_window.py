@@ -51,7 +51,7 @@ class FlightPlanToolkit(QMainWindow):
         self.ui.toolbar_preferences_button.triggered.connect(self._open_settings_dialog)
 
     def _setup_signals(self) -> None:
-        self.ui.runway_info_table.selection_changed.connect(self._update_runway_display)
+        pass
 
     def _get_and_display_airport_info(self) -> None:
         airport_id = self.ui.airport_id_lineedit.text()
@@ -76,17 +76,6 @@ class FlightPlanToolkit(QMainWindow):
         self.ui.runway_info_table.setModel(model)
         self.ui.runway_info_table.resizeColumnsToContents()
         self.ui.runway_info_table.resizeRowsToContents()
-
-    def _update_runway_display(self):
-        text_display = "no runway info found"
-        if selected_index := self.ui.runway_info_table.selectedIndexes():
-            runway_ident_qindex = selected_index[0]
-            runway_ident = self.ui.runway_info_table.model().data(runway_ident_qindex)
-            runway_info = self._api.get_runway_info(runway_ident)
-            text_display = "".join(
-                [f"{key}: {value}\n" for key, value in runway_info._asdict().items()]
-            )
-        self.ui.runway_info_display.setPlainText(text_display)
 
     def _get_and_display_route_info(self) -> None:
         start_airport_id = self.ui.start_airport_lineedit.text()

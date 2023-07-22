@@ -158,6 +158,13 @@
             </item>
            </layout>
           </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="map_label">
+            <property name="text">
+             <string>Map</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0" colspan="2">
            <widget class="QTableView" name="airport_info_table">
             <property name="contextMenuPolicy">
@@ -181,16 +188,6 @@
             </property>
            </widget>
           </item>
-          <item row="10" column="1">
-           <widget class="QTextBrowser" name="runway_info_display">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="0">
            <widget class="QLabel" name="runway_info_label">
             <property name="text">
@@ -198,12 +195,8 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Runway Info</string>
-            </property>
-           </widget>
+          <item row="10" column="1">
+           <widget class="QGraphicsView" name="runway_map_view"/>
           </item>
          </layout>
         </item>

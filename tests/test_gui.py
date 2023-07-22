@@ -5,6 +5,8 @@ import pytest
 if not sys.platform.startswith("win"):
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
+import pandas as pd
+from pandas.testing import assert_frame_equal
 from PySide6.QtCore import Qt
 from pytest_mock import MockerFixture
 from pytestqt.qtbot import QtBot  # type: ignore
@@ -109,3 +111,45 @@ def test_settings_dialog_opens(qtbot: QtBot, mocker: MockerFixture):
     toolkit.ui.toolbar_preferences_button.trigger()
 
     dialog_mock.assert_called_once()
+
+
+def test_datis_display_gets_populated(qtbot: QtBot, mocker: MockerFixture):
+    mocker.patch(
+        "zc_flightplan_toolkit.gui_window.FlightAwareAPI.get_airport_information"
+    )
+    datis_mock = mocker.patch(
+        "zc_flightplan_toolkit.gui_window.FlightAwareAPI.get_datis"
+    )
+    datis_mock.return_value = "mock_datis"
+
+    toolkit = FlightPlanToolkit()
+    toolkit.show()
+    qtbot.addWidget(toolkit)
+
+    toolkit.ui.airport_id_lineedit.setText("wsss")
+    qtbot.mouseClick(toolkit.ui.get_airport_info_button, Qt.MouseButton.LeftButton)
+
+    assert toolkit.ui.atis_display.toPlainText() == "mock_datis"
+
+
+def test_airport_runways_table_gets_populated(qtbot: QtBot, mocker: MockerFixture):
+    mocker.patch(
+        "zc_flightplan_toolkit.gui_window.FlightAwareAPI.get_airport_information"
+    )
+    mocker.patch(
+        "zc_flightplan_toolkit.gui_window.FlightAwareAPI.get_datis", return_value=""
+    )
+    get_runways_mock = mocker.patch(
+        "zc_flightplan_toolkit.gui_window.FlightAwareAPI.get_airport_runways"
+    )
+    mock_data = pd.DataFrame([{"mock_column": "mock_data"}])
+    get_runways_mock.return_value = mock_data
+
+    toolkit = FlightPlanToolkit()
+    toolkit.show()
+    qtbot.addWidget(toolkit)
+
+    toolkit.ui.airport_id_lineedit.setText("wsss")
+    qtbot.mouseClick(toolkit.ui.get_airport_info_button, Qt.MouseButton.LeftButton)
+
+    assert_frame_equal(toolkit.ui.runway_info_table.model().get_data(), mock_data)

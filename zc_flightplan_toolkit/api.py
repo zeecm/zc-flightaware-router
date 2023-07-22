@@ -10,17 +10,17 @@ from frozendict import frozendict
 from loguru import logger
 from requests import Response
 
-from zc_flightplan_toolkit.airport_info import (
-    AirportRunwayInfo,
-    DMAirportRunwayInfo,
-    RunwayInfo,
-)
 from zc_flightplan_toolkit.constants import (
     AERO_API_KEY,
     DATIS_ENDPOINT,
     FLIGHTAWARE_API_URL,
     DATISInfo,
     FlightAwareAirportColumns,
+)
+from zc_flightplan_toolkit.runways import (
+    AirportRunwayInfo,
+    DMAirportRunwayInfo,
+    RunwayInfo,
 )
 from zc_flightplan_toolkit.utils import get_unique_value
 

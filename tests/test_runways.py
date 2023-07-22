@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from zc_flightplan_toolkit.airport_info import DMAirportRunwayInfo
+from zc_flightplan_toolkit.runways import DMAirportRunwayInfo
 
 
 @pytest.mark.parametrize(
@@ -14,7 +14,7 @@ from zc_flightplan_toolkit.airport_info import DMAirportRunwayInfo
 )
 def test_get_airport_runway_info(icao: str):
     info = DMAirportRunwayInfo()
-    airport_info = info._get_runways_info_for_airport(icao)
+    airport_info = info.get_airport_runways(icao)
     assert isinstance(airport_info, pd.DataFrame)
 
 

@@ -45,6 +45,7 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QAbstractScrollArea,
     QApplication,
+    QGraphicsView,
     QGridLayout,
     QHBoxLayout,
     QHeaderView,
@@ -172,6 +173,11 @@ class Ui_mainWindow(object):
 
         self.gridLayout_8.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
+        self.map_label = QLabel(self.airport_info_tab)
+        self.map_label.setObjectName("map_label")
+
+        self.gridLayout_8.addWidget(self.map_label, 2, 1, 1, 1)
+
         self.airport_info_table = QTableView(self.airport_info_tab)
         self.airport_info_table.setObjectName("airport_info_table")
         self.airport_info_table.setContextMenuPolicy(Qt.ActionsContextMenu)
@@ -188,27 +194,15 @@ class Ui_mainWindow(object):
 
         self.gridLayout_8.addWidget(self.datis_info_label, 11, 0, 1, 1)
 
-        self.runway_info_display = QTextBrowser(self.airport_info_tab)
-        self.runway_info_display.setObjectName("runway_info_display")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.runway_info_display.sizePolicy().hasHeightForWidth()
-        )
-        self.runway_info_display.setSizePolicy(sizePolicy)
-
-        self.gridLayout_8.addWidget(self.runway_info_display, 10, 1, 1, 1)
-
         self.runway_info_label = QLabel(self.airport_info_tab)
         self.runway_info_label.setObjectName("runway_info_label")
 
         self.gridLayout_8.addWidget(self.runway_info_label, 2, 0, 1, 1)
 
-        self.label = QLabel(self.airport_info_tab)
-        self.label.setObjectName("label")
+        self.runway_map_view = QGraphicsView(self.airport_info_tab)
+        self.runway_map_view.setObjectName("runway_map_view")
 
-        self.gridLayout_8.addWidget(self.label, 2, 1, 1, 1)
+        self.gridLayout_8.addWidget(self.runway_map_view, 10, 1, 1, 1)
 
         self.gridLayout.addLayout(self.gridLayout_8, 0, 1, 1, 1)
 
@@ -315,14 +309,12 @@ class Ui_mainWindow(object):
         self.get_airport_info_button.setText(
             QCoreApplication.translate("mainWindow", "Get Airport Info", None)
         )
+        self.map_label.setText(QCoreApplication.translate("mainWindow", "Map", None))
         self.datis_info_label.setText(
             QCoreApplication.translate("mainWindow", "D-ATIS", None)
         )
         self.runway_info_label.setText(
             QCoreApplication.translate("mainWindow", "Runways", None)
-        )
-        self.label.setText(
-            QCoreApplication.translate("mainWindow", "Runway Info", None)
         )
         self.main_tabs.setTabText(
             self.main_tabs.indexOf(self.airport_info_tab),
