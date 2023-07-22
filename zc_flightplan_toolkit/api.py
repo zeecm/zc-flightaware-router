@@ -10,6 +10,11 @@ from frozendict import frozendict
 from loguru import logger
 from requests import Response
 
+from zc_flightplan_toolkit.airport_info import (
+    AirportRunwayInfo,
+    DMAirportRunwayInfo,
+    RunwayInfo,
+)
 from zc_flightplan_toolkit.constants import (
     AERO_API_KEY,
     DATIS_ENDPOINT,
@@ -17,6 +22,7 @@ from zc_flightplan_toolkit.constants import (
     DATISInfo,
     FlightAwareAirportColumns,
 )
+from zc_flightplan_toolkit.utils import get_unique_value
 
 
 class DATISAPI(Protocol):
@@ -70,6 +76,12 @@ class FlightInfoAPI(Protocol):
     def get_datis(self) -> str:
         ...
 
+    def get_airport_runways(self) -> pd.DataFrame:
+        ...
+
+    def get_runway_info(self, runway_ident: str) -> RunwayInfo:
+        ...
+
     @classmethod
     def reinitialize(cls, **kwargs) -> FlightInfoAPI:
         ...
@@ -85,9 +97,11 @@ class FlightAwareAPI:
         api_url: str = FLIGHTAWARE_API_URL,
         api_key: str = "",
         datis_api: DATISAPI = ClowdIoDATISAPI(),
+        runway_info_source: AirportRunwayInfo = DMAirportRunwayInfo(),
     ):
         self._api_url = api_url
         self._datis_api = datis_api
+        self._runway_info_source = runway_info_source
 
         if not api_key:
             api_key = AERO_API_KEY
@@ -181,15 +195,39 @@ class FlightAwareAPI:
             self.airport_info is not None
             and FlightAwareAirportColumns.ICAO.value in self.airport_info.columns
         ):
-            airport_icao = (
-                self.airport_info[FlightAwareAirportColumns.ICAO.value]
-                .astype(str)
-                .iloc[0]
+            airport_icao = get_unique_value(
+                self.airport_info, FlightAwareAirportColumns.ICAO.value, str
             )
             return self._datis_api.request_datis(airport_icao)
         error_msg = "invalid or missing airport data, no datis"
         logger.warning(error_msg)
         return error_msg
+
+    def get_airport_runways(self) -> pd.DataFrame:
+        if (
+            self.airport_info is not None
+            and FlightAwareAirportColumns.ICAO.value in self.airport_info.columns
+        ):
+            airport_icao = get_unique_value(
+                self.airport_info, FlightAwareAirportColumns.ICAO.value, str
+            )
+            return self._runway_info_source.get_airport_runways(airport_icao)
+        error_msg = "invalid or missing airport data, unable to fetch runway info"
+        logger.warning(error_msg)
+        return pd.DataFrame([{"error": error_msg}])
+
+    def get_runway_info(self, runway_ident: str) -> RunwayInfo:
+        if (
+            self.airport_info is not None
+            and FlightAwareAirportColumns.ICAO.value in self.airport_info.columns
+        ):
+            airport_icao = get_unique_value(
+                self.airport_info, FlightAwareAirportColumns.ICAO.value, str
+            )
+            return self._runway_info_source.get_runway_info(airport_icao, runway_ident)
+        error_msg = "invalid or missing airport data, unable to fetch runway info"
+        logger.warning(error_msg)
+        return RunwayInfo()
 
     def _process_airport_info(
         self, airport_info: Dict[str, Any]

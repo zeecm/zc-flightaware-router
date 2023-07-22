@@ -16,18 +16,18 @@ class RunwayData(Enum):
 
 
 class RunwayInfo(NamedTuple):
-    ident: str
-    heading: int
-    longitude: float
-    latitude: float
-    threshold_elevation: int
-    displaced_threshold: int
+    ident: str = "NA"
+    heading: int = 0
+    longitude: float = 0.0
+    latitude: float = 0.0
+    threshold_elevation: int = 0
+    displaced_threshold: int = 0
 
 
 class AirportRunwayInfo(Protocol):
     data: pd.DataFrame
 
-    def get_airport_runway_info(self, icao: str) -> pd.DataFrame:
+    def get_airport_runways(self, icao: str) -> pd.DataFrame:
         ...
 
     def get_runway_info(self, icao: str, runway_ident: str) -> RunwayInfo:
@@ -80,12 +80,19 @@ class DMAirportRunwayInfo:
     ):
         self.data = pd.read_csv(info_source)
 
-    def get_airport_runway_info(self, icao: str) -> pd.DataFrame:
-        airport_data = self.data[self.data[DMColumns.ICAO.value] == icao.upper()]
-        rename_map = {col.value: col.name for col in DMColumns}
-        airport_data = airport_data.rename(columns=rename_map, errors="raise")
-        final_colmnns = [col.name for col in DMColumns]
-        return airport_data[final_colmnns]
+    def get_airport_runways(self, icao: str) -> pd.DataFrame:
+        airport_data = self._get_runways_info_for_airport(icao)
+        left_end_idents = airport_data[DMColumns.LEFT_END_IDENT.name].unique().tolist()
+        right_end_idents = (
+            airport_data[DMColumns.RIGHT_END_IDENT.name].unique().tolist()
+        )
+        all_runway_idents = left_end_idents + right_end_idents
+
+        rows_with_runway_info = []
+        for ident in all_runway_idents:
+            runway_info = self.get_runway_info(icao, ident)
+            rows_with_runway_info.append(runway_info._asdict())
+        return pd.DataFrame(rows_with_runway_info)
 
     def get_runway_info(self, icao: str, runway_ident: str) -> RunwayInfo:
         runway_ident = runway_ident.upper()
@@ -99,12 +106,19 @@ class DMAirportRunwayInfo:
     def _get_runway_info_matching_ident(
         self, icao: str, runway_ident: str
     ) -> pd.DataFrame:
-        airport_data = self.get_airport_runway_info(icao)
+        airport_data = self._get_runways_info_for_airport(icao)
 
         left_end_match = airport_data[DMColumns.LEFT_END_IDENT.name] == runway_ident
         right_end_match = airport_data[DMColumns.RIGHT_END_IDENT.name] == runway_ident
 
         return airport_data[(left_end_match | right_end_match)]
+
+    def _get_runways_info_for_airport(self, icao: str) -> pd.DataFrame:
+        airport_data = self.data[self.data[DMColumns.ICAO.value] == icao.upper()]
+        rename_map = {col.value: col.name for col in DMColumns}
+        airport_data = airport_data.rename(columns=rename_map, errors="raise")
+        final_colmnns = [col.name for col in DMColumns]
+        return airport_data[final_colmnns]
 
     def _find_end_that_matches_ident(
         self, runway_info: pd.DataFrame, runway_ident: str

@@ -63,6 +63,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from zc_flightplan_toolkit.gui_classes import CustomQTableView
+
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -132,9 +134,23 @@ class Ui_mainWindow(object):
         self.airport_info_tab.setObjectName("airport_info_tab")
         self.gridLayout = QGridLayout(self.airport_info_tab)
         self.gridLayout.setObjectName("gridLayout")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout.setContentsMargins(-1, 0, -1, -1)
+        self.gridLayout_8 = QGridLayout()
+        self.gridLayout_8.setObjectName("gridLayout_8")
+        self.gridLayout_8.setContentsMargins(-1, 0, -1, -1)
+        self.runway_info_table = CustomQTableView(self.airport_info_tab)
+        self.runway_info_table.setObjectName("runway_info_table")
+        self.runway_info_table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.runway_info_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.runway_info_table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.runway_info_table.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+
+        self.gridLayout_8.addWidget(self.runway_info_table, 10, 0, 1, 1)
+
+        self.atis_display = QTextBrowser(self.airport_info_tab)
+        self.atis_display.setObjectName("atis_display")
+
+        self.gridLayout_8.addWidget(self.atis_display, 12, 0, 1, 2)
+
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, -1)
@@ -154,7 +170,7 @@ class Ui_mainWindow(object):
 
         self.horizontalLayout.addWidget(self.get_airport_info_button)
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.gridLayout_8.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
         self.airport_info_table = QTableView(self.airport_info_tab)
         self.airport_info_table.setObjectName("airport_info_table")
@@ -165,19 +181,36 @@ class Ui_mainWindow(object):
             QAbstractItemView.ScrollPerPixel
         )
 
-        self.verticalLayout.addWidget(self.airport_info_table)
+        self.gridLayout_8.addWidget(self.airport_info_table, 1, 0, 1, 2)
+
+        self.datis_info_label = QLabel(self.airport_info_tab)
+        self.datis_info_label.setObjectName("datis_info_label")
+
+        self.gridLayout_8.addWidget(self.datis_info_label, 11, 0, 1, 1)
+
+        self.runway_info_display = QTextBrowser(self.airport_info_tab)
+        self.runway_info_display.setObjectName("runway_info_display")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(
+            self.runway_info_display.sizePolicy().hasHeightForWidth()
+        )
+        self.runway_info_display.setSizePolicy(sizePolicy)
+
+        self.gridLayout_8.addWidget(self.runway_info_display, 10, 1, 1, 1)
+
+        self.runway_info_label = QLabel(self.airport_info_tab)
+        self.runway_info_label.setObjectName("runway_info_label")
+
+        self.gridLayout_8.addWidget(self.runway_info_label, 2, 0, 1, 1)
 
         self.label = QLabel(self.airport_info_tab)
         self.label.setObjectName("label")
 
-        self.verticalLayout.addWidget(self.label)
+        self.gridLayout_8.addWidget(self.label, 2, 1, 1, 1)
 
-        self.atis_display = QTextBrowser(self.airport_info_tab)
-        self.atis_display.setObjectName("atis_display")
-
-        self.verticalLayout.addWidget(self.atis_display)
-
-        self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_8, 0, 1, 1, 1)
 
         self.main_tabs.addTab(self.airport_info_tab, "")
         self.tracks_information_tab = QWidget()
@@ -282,7 +315,15 @@ class Ui_mainWindow(object):
         self.get_airport_info_button.setText(
             QCoreApplication.translate("mainWindow", "Get Airport Info", None)
         )
-        self.label.setText(QCoreApplication.translate("mainWindow", "D-ATIS", None))
+        self.datis_info_label.setText(
+            QCoreApplication.translate("mainWindow", "D-ATIS", None)
+        )
+        self.runway_info_label.setText(
+            QCoreApplication.translate("mainWindow", "Runways", None)
+        )
+        self.label.setText(
+            QCoreApplication.translate("mainWindow", "Runway Info", None)
+        )
         self.main_tabs.setTabText(
             self.main_tabs.indexOf(self.airport_info_tab),
             QCoreApplication.translate("mainWindow", "Airport Information", None),

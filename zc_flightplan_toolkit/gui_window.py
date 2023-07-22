@@ -29,6 +29,11 @@ class FlightPlanToolkit(QMainWindow):
 
         self._setup_buttons()
         self._setup_toolbar()
+        self._setup_signals()
+
+    def _initialize_api(self, api: Optional[FlightInfoAPI] = None) -> None:
+        aero_api_key = self.preferences.get_setting(Preferences.AERO_API_KEY.value)
+        self._api = api or FlightAwareAPI(api_key=aero_api_key)
 
     def _setup_buttons(self) -> None:
         self.ui.get_airport_info_button.clicked.connect(
@@ -42,12 +47,11 @@ class FlightPlanToolkit(QMainWindow):
             self._get_pacific_tracks_button_clicked
         )
 
-    def _initialize_api(self, api: Optional[FlightInfoAPI] = None) -> None:
-        aero_api_key = self.preferences.get_setting(Preferences.AERO_API_KEY.value)
-        self._api = api or FlightAwareAPI(api_key=aero_api_key)
-
     def _setup_toolbar(self) -> None:
         self.ui.toolbar_preferences_button.triggered.connect(self._open_settings_dialog)
+
+    def _setup_signals(self) -> None:
+        self.ui.runway_info_table.selection_changed.connect(self._update_runway_display)
 
     def _get_and_display_airport_info(self) -> None:
         airport_id = self.ui.airport_id_lineedit.text()
@@ -60,10 +64,29 @@ class FlightPlanToolkit(QMainWindow):
         self.ui.airport_info_table.resizeRowsToContents()
 
         self._update_datis_display()
+        self._update_airport_runways_table()
 
     def _update_datis_display(self) -> None:
         airport_datis = self._api.get_datis()
         self.ui.atis_display.setPlainText(airport_datis)
+
+    def _update_airport_runways_table(self) -> None:
+        airport_runways = self._api.get_airport_runways()
+        model = PandasModel(airport_runways)
+        self.ui.runway_info_table.setModel(model)
+        self.ui.runway_info_table.resizeColumnsToContents()
+        self.ui.runway_info_table.resizeRowsToContents()
+
+    def _update_runway_display(self):
+        text_display = "no runway info found"
+        if selected_index := self.ui.runway_info_table.selectedIndexes():
+            runway_ident_qindex = selected_index[0]
+            runway_ident = self.ui.runway_info_table.model().data(runway_ident_qindex)
+            runway_info = self._api.get_runway_info(runway_ident)
+            text_display = "".join(
+                [f"{key}: {value}\n" for key, value in runway_info._asdict().items()]
+            )
+        self.ui.runway_info_display.setPlainText(text_display)
 
     def _get_and_display_route_info(self) -> None:
         start_airport_id = self.ui.start_airport_lineedit.text()

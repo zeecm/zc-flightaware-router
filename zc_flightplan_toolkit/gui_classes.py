@@ -2,12 +2,32 @@ from typing import Optional
 
 import pandas as pd
 from loguru import logger
-from PySide6.QtCore import QAbstractTableModel, QModelIndex, QSettings, Qt
-from PySide6.QtWidgets import QDialog, QWidget
+from PySide6.QtCore import (
+    QAbstractTableModel,
+    QItemSelection,
+    QModelIndex,
+    QSettings,
+    Qt,
+    Signal,
+)
+from PySide6.QtWidgets import QDialog, QTableView, QWidget
 
 from zc_flightplan_toolkit.qdesigner_generated_ui.generated_settings import (
     Ui_preferences_dialog,
 )
+
+
+class CustomQTableView(QTableView):
+    selection_changed = Signal()
+
+    def __init__(self, parent: Optional[QWidget] = None) -> None:
+        super().__init__(parent)
+
+    def selectionChanged(
+        self, selected: QItemSelection, deselected: QItemSelection
+    ) -> None:
+        self.selection_changed.emit()
+        return super().selectionChanged(selected, deselected)
 
 
 class PandasModel(QAbstractTableModel):
@@ -31,7 +51,9 @@ class PandasModel(QAbstractTableModel):
         """
         return len(self._dataframe.columns) if parent == QModelIndex() else 0
 
-    def data(self, index: QModelIndex, role=Qt.ItemDataRole):
+    def data(
+        self, index: QModelIndex, role: Qt.ItemDataRole = Qt.ItemDataRole.DisplayRole
+    ):
         """Override method from QAbstractTableModel
 
         Return data cell from the pandas DataFrame
