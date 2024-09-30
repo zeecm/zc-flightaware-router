@@ -13,6 +13,10 @@ DATIS_ENDPOINT = "http://datis.clowd.io/api/"
 
 AERO_API_KEY = os.environ.get("AERO_API_KEY", "")
 
+FS_HUB_API_KEY = os.environ.get("FS_HUB_API_KEY", "")
+
+FS_HUB_API_URL = "https://fshub.io/api/v3"
+
 CHECKWX_API_KEY = os.environ.get("CHECKWX_API_KEY", "")
 
 CHECKWX_API_URL = "https://api.checkwx.com"
